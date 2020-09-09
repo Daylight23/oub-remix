@@ -1,32 +1,11 @@
-# Copyright (C) 2019 The Raphielscape Company LLC.
-#
-# Licensed under the Raphielscape Public License, Version 1.d (the "License");
-# you may not use this file except in compliance with the License.
-# credit goes to @snapdragon and @devpatel_73 for making it work on this userbot.
-#
+#huge thanks to @SnapDragon7410
 
 from coffeehouse.lydia import LydiaAI
 from coffeehouse.api import API
 import asyncio
-from telethon import events
-import logging
-logging.basicConfig(format='[%(levelname) 5s/%(asctime)s] %(name)s: %(message)s',
-                    level=logging.WARNING)
-
-import coffeehouse as cf
-
-import asyncio
-import io
-from userbot.modules.sql_helper.lydia_sql import get_s, get_all_s, add_s, remove_s
-from time import time
-import coffeehouse
-from userbot import LYDIA_API_KEY
-from userbot import BOTLOG, BOTLOG_CHATID, CMD_HELP, bot
+from userbot import LYDIA_API_KEY, CMD_HELP
 from userbot.events import register
 from telethon import events
-from coffeehouse.lydia import LydiaAI
-from coffeehouse.api import API
-
 
 # Non-SQL Mode
 ACC_LYDIA = {}
@@ -47,7 +26,7 @@ async def repcf(event):
         reply = await event.get_reply_message()
         msg = reply.text
         text_rep = session.think_thought(msg)
-        await event.edit("**hey friend**: {0}".format(text_rep))
+        await event.edit("**Lydia says**: {0}".format(text_rep))
     except Exception as e:
         await event.edit(str(e))
 
@@ -55,8 +34,8 @@ async def repcf(event):
 async def addcf(event):
     if event.fwd_from:
         return
-    await event.edit("Running on Non-SQL mode for now...")
-    await asyncio.sleep(3)
+    await event.edit("Running on Non-SQL mode...")
+    await asyncio.sleep(4)
     await event.edit("Processing...")
     reply_msg = await event.get_reply_message()
     if reply_msg:
@@ -65,7 +44,7 @@ async def addcf(event):
         if reply_msg.from_id is None:
             return await event.edit("Invalid user type.")
         ACC_LYDIA.update({(event.chat_id & reply_msg.from_id): session})
-        await event.edit("Lydia successfully (re)enabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
+        await event.edit("Lydia successfully enabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
     else:
         await event.edit("Reply to a user to activate Lydia AI on them")
 
@@ -73,8 +52,8 @@ async def addcf(event):
 async def remcf(event):
     if event.fwd_from:
         return
-    await event.edit("Running on Non-SQL mode for now...")
-    await asyncio.sleep(3)
+    await event.edit("Running on Non-SQL mode...")
+    await asyncio.sleep(4)
     await event.edit("Processing...")
     reply_msg = await event.get_reply_message()
     try:
@@ -82,7 +61,6 @@ async def remcf(event):
         await event.edit("Lydia successfully disabled for user: {} in chat: {}".format(str(reply_msg.from_id), str(event.chat_id)))
     except Exception:
         await event.edit("This person does not have Lydia activated on him/her.")
-
 
 @register(incoming=True, disable_edited=True)
 async def user(event):
@@ -100,7 +78,6 @@ async def user(event):
     except (KeyError, TypeError):
         return
 
-      
 CMD_HELP.update({
     "lydia":
     ".addcf <username/reply>\
@@ -108,6 +85,6 @@ CMD_HELP.update({
 \n\n.remcf <username/reply>\
 \nUsage: remove's lydia auto chat request in the chat.\
 \n\n.repcf <username/reply>\
-\nUsage: starts lydia repling to perticular person in the chat.\
+\nUsage: starts lydia replying to particular person in the chat. \
 \n Note:  get your value from https://coffeehouse.intellivoid.info/dashboard."
 })
